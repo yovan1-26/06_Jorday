@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Table User</title>
+    <title>Render Data</title>
+    <style>
+        .card {
+            border: 1px solid black;
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
 
 <h2>Tambah User</h2>
-
 <input type="text" id="namaDepan" placeholder="Nama Depan">
 <input type="text" id="namaBelakang" placeholder="Nama Belakang">
 <button onclick="tambahUser()">Tambah</button>
 
-<h2>List User</h2>
-
+<!-- TABLE -->
+<h2>Table User</h2>
 <table border="1">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nama Depan</th>
-            <th>Nama Belakang</th>
+            <th>Nama</th>
         </tr>
     </thead>
-    <tbody id="bodyTable"></tbody>
+    <tbody id="tableBody"></tbody>
 </table>
+
+<!-- LIST -->
+<h2>List User</h2>
+<ul id="listUser"></ul>
+
+<!-- CARD -->
+<h2>Card User</h2>
+<div id="cardContainer"></div>
 
 <script>
 // DATA
@@ -31,42 +45,77 @@ let users = [
     { id: 2, nama_depan: "Dina", nama_belakang: "Saputra" }
 ];
 
-// RENDER (Reusable & Modular)
+// FUNCTION GABUNG NAMA (Reuse)
+function getNamaLengkap(user) {
+    return user.nama_depan + " " + user.nama_belakang;
+}
+
+// RENDER TABLE
 function renderTable(data) {
-    const tbody = document.getElementById("bodyTable");
+    const tbody = document.getElementById("tableBody");
     tbody.innerHTML = "";
 
     data.forEach(user => {
-        const row = `
+        tbody.innerHTML += `
             <tr>
                 <td>${user.id}</td>
-                <td>${user.nama_depan}</td>
-                <td>${user.nama_belakang}</td>
+                <td>${getNamaLengkap(user)}</td>
             </tr>
         `;
-        tbody.innerHTML += row;
     });
+}
+
+// RENDER LIST
+function renderList(data) {
+    const list = document.getElementById("listUser");
+    list.innerHTML = "";
+
+    data.forEach(user => {
+        list.innerHTML += `
+            <li>${getNamaLengkap(user)}</li>
+        `;
+    });
+}
+
+// RENDER CARD
+function renderCard(data) {
+    const container = document.getElementById("cardContainer");
+    container.innerHTML = "";
+
+    data.forEach(user => {
+        container.innerHTML += `
+            <div class="card">
+                <p>ID: ${user.id}</p>
+                <p>Nama: ${getNamaLengkap(user)}</p>
+            </div>
+        `;
+    });
+}
+
+// RENDER SEMUA (Modular)
+function renderAll() {
+    renderTable(users);
+    renderList(users);
+    renderCard(users);
 }
 
 // TAMBAH USER
 function tambahUser() {
-    const namaDepan = document.getElementById("namaDepan").value;
-    const namaBelakang = document.getElementById("namaBelakang").value;
+    const depan = document.getElementById("namaDepan").value;
+    const belakang = document.getElementById("namaBelakang").value;
 
-    if (namaDepan === "" || namaBelakang === "") {
+    if (depan === "" || belakang === "") {
         alert("Isi semua field!");
         return;
     }
 
-    const newUser = {
+    users.push({
         id: users.length + 1,
-        nama_depan: namaDepan,
-        nama_belakang: namaBelakang
-    };
+        nama_depan: depan,
+        nama_belakang: belakang
+    });
 
-    users.push(newUser);
-
-    renderTable(users); // update tampilan
+    renderAll();
 
     // reset input
     document.getElementById("namaDepan").value = "";
@@ -74,7 +123,7 @@ function tambahUser() {
 }
 
 // INIT
-renderTable(users);
+renderAll();
 
 </script>
 
