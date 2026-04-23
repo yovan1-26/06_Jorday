@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Render</title>
+</head>
+<body>
+
+<h2>Data User</h2>
+
+<table border="1" id="tableUser">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+        </tr>
+    </thead>
+    <tbody id="bodyTable">
+    </tbody>
+</table>
+
+<script>
+// DATA (bisa dari API / JSON)
+const users = [
+    { id: 1, nama: "Sari" },
+    { id: 2, nama: "Dina" },
+    { id: 3, nama: "Tiya" }
+];
+
+// FUNCTION RENDER (Reusable & Modular)
+function renderTable(data) {
+    const tbody = document.getElementById("bodyTable");
+    tbody.innerHTML = ""; // clear dulu
+
+    data.forEach(user => {
+        const row = `
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.nama}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// CALL FUNCTION
+renderTable(users);
+
+</script>
+
+</body>
+</html>
