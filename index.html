@@ -1,48 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Table Render</title>
+    <title>Table User</title>
 </head>
 <body>
 
-<h2>Data User</h2>
+<h2>Tambah User</h2>
 
-<table border="1" id="tableUser">
+<input type="text" id="namaDepan" placeholder="Nama Depan">
+<input type="text" id="namaBelakang" placeholder="Nama Belakang">
+<button onclick="tambahUser()">Tambah</button>
+
+<h2>List User</h2>
+
+<table border="1">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nama</th>
+            <th>Nama Depan</th>
+            <th>Nama Belakang</th>
         </tr>
     </thead>
-    <tbody id="bodyTable">
-    </tbody>
+    <tbody id="bodyTable"></tbody>
 </table>
 
 <script>
-// DATA (bisa dari API / JSON)
-const users = [
-    { id: 1, nama: "Sari" },
-    { id: 2, nama: "Dina" },
-    { id: 3, nama: "Tiya" }
+// DATA
+let users = [
+    { id: 1, nama_depan: "Sari", nama_belakang: "Putri" },
+    { id: 2, nama_depan: "Dina", nama_belakang: "Saputra" }
 ];
 
-// FUNCTION RENDER (Reusable & Modular)
+// RENDER (Reusable & Modular)
 function renderTable(data) {
     const tbody = document.getElementById("bodyTable");
-    tbody.innerHTML = ""; // clear dulu
+    tbody.innerHTML = "";
 
     data.forEach(user => {
         const row = `
             <tr>
                 <td>${user.id}</td>
-                <td>${user.nama}</td>
+                <td>${user.nama_depan}</td>
+                <td>${user.nama_belakang}</td>
             </tr>
         `;
         tbody.innerHTML += row;
     });
 }
 
-// CALL FUNCTION
+// TAMBAH USER
+function tambahUser() {
+    const namaDepan = document.getElementById("namaDepan").value;
+    const namaBelakang = document.getElementById("namaBelakang").value;
+
+    if (namaDepan === "" || namaBelakang === "") {
+        alert("Isi semua field!");
+        return;
+    }
+
+    const newUser = {
+        id: users.length + 1,
+        nama_depan: namaDepan,
+        nama_belakang: namaBelakang
+    };
+
+    users.push(newUser);
+
+    renderTable(users); // update tampilan
+
+    // reset input
+    document.getElementById("namaDepan").value = "";
+    document.getElementById("namaBelakang").value = "";
+}
+
+// INIT
 renderTable(users);
 
 </script>
