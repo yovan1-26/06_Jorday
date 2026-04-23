@@ -1,26 +1,144 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Render Data</title>
+    <title>Premium UI User</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
     <style>
-        .card {
-            border: 1px solid black;
+        * {
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+            color: white;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        /* FORM */
+        .form {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        input {
             padding: 10px;
             margin: 5px;
-            width: 200px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
         }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #6c5ce7;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #a29bfe;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* LIST */
+        ul {
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+            padding: 12px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        li:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* CARD */
+        #cardContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card {
+            width: 220px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .card h3 {
+            margin: 0;
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #dfe6e9;
+        }
+
     </style>
 </head>
 <body>
 
-<h2>Tambah User</h2>
-<input type="text" id="namaDepan" placeholder="Nama Depan">
-<input type="text" id="namaBelakang" placeholder="Nama Belakang">
-<button onclick="tambahUser()">Tambah</button>
+<div class="form">
+    <h2>Tambah User</h2>
+    <input type="text" id="namaDepan" placeholder="Nama Depan">
+    <input type="text" id="namaBelakang" placeholder="Nama Belakang">
+    <button onclick="tambahUser()">Tambah</button>
+</div>
 
-<!-- TABLE -->
 <h2>Table User</h2>
-<table border="1">
+<table>
     <thead>
         <tr>
             <th>ID</th>
@@ -30,31 +148,25 @@
     <tbody id="tableBody"></tbody>
 </table>
 
-<!-- LIST -->
 <h2>List User</h2>
 <ul id="listUser"></ul>
 
-<!-- CARD -->
 <h2>Card User</h2>
 <div id="cardContainer"></div>
 
 <script>
-// DATA
 let users = [
     { id: 1, nama_depan: "Sari", nama_belakang: "Putri" },
     { id: 2, nama_depan: "Dina", nama_belakang: "Saputra" }
 ];
 
-// FUNCTION GABUNG NAMA (Reuse)
 function getNamaLengkap(user) {
     return user.nama_depan + " " + user.nama_belakang;
 }
 
-// RENDER TABLE
 function renderTable(data) {
     const tbody = document.getElementById("tableBody");
     tbody.innerHTML = "";
-
     data.forEach(user => {
         tbody.innerHTML += `
             <tr>
@@ -65,11 +177,9 @@ function renderTable(data) {
     });
 }
 
-// RENDER LIST
 function renderList(data) {
     const list = document.getElementById("listUser");
     list.innerHTML = "";
-
     data.forEach(user => {
         list.innerHTML += `
             <li>${getNamaLengkap(user)}</li>
@@ -77,29 +187,25 @@ function renderList(data) {
     });
 }
 
-// RENDER CARD
 function renderCard(data) {
     const container = document.getElementById("cardContainer");
     container.innerHTML = "";
-
     data.forEach(user => {
         container.innerHTML += `
             <div class="card">
+                <h3>${getNamaLengkap(user)}</h3>
                 <p>ID: ${user.id}</p>
-                <p>Nama: ${getNamaLengkap(user)}</p>
             </div>
         `;
     });
 }
 
-// RENDER SEMUA (Modular)
 function renderAll() {
     renderTable(users);
     renderList(users);
     renderCard(users);
 }
 
-// TAMBAH USER
 function tambahUser() {
     const depan = document.getElementById("namaDepan").value;
     const belakang = document.getElementById("namaBelakang").value;
@@ -117,14 +223,11 @@ function tambahUser() {
 
     renderAll();
 
-    // reset input
     document.getElementById("namaDepan").value = "";
     document.getElementById("namaBelakang").value = "";
 }
 
-// INIT
 renderAll();
-
 </script>
 
 </body>
